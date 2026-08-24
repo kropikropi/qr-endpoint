@@ -7,8 +7,20 @@ export default function handler(req, res) {
   let amount = req.query.amount || "0";
   let vs     = req.query.vs || "";
 
-  amount = amount.replace(",", ".");
-  amount = parseFloat(amount).toFixed(2);
+  // Vyčištění částky:
+  // 1) odstranit mezery (tisícový oddělovač i případné URL zbytky)
+  // 2) odstranit tečky (tisícový oddělovač, např. "1.567,00")
+  // 3) nahradit desetinnou čárku tečkou (pro parseFloat/EPC formát)
+  amount = String(amount)
+    .replace(/\s/g, '')
+    .replace(/\./g, '')
+    .replace(',', '.');
+
+  const parsedAmount = parseFloat(amount);
+  amount = isNaN(parsedAmount) ? "0.00" : parsedAmount.toFixed(2);
+
+  // Vyčištění variabilního symbolu - jen čísla
+  vs = String(vs).replace(/[^0-9]/g, '');
 
   const epc =
 `BCD
