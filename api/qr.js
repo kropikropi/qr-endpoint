@@ -1,7 +1,7 @@
 export default function handler(req, res) {
 
   const bic  = "AIRACZPP";
-  const name = "TaubenAbwehrSpikes.at";
+  const name = "Mgr. Hana Kropackova";
   const iban = "CZ4930300000003496321046";
 
   let amount = req.query.amount || "0";
